@@ -1,8 +1,8 @@
 param (
     [Parameter(Mandatory=$true)][string]$url,
     [string]$folder = "Generic",
-    [string]$tool_path = "f:/Tools/yt-dlp",
-    [string]$ffmpeg_path = "f:/Tools/yt-dlp/ffmpeg-master-latest-win64-gpl/bin/",
+    [string]$tool_path = "f:\YTdlp\",
+    [string]$ffmpeg_path = "f:\YTdlp\ffmpeg-master-latest-win64-gpl\bin\",
     [switch]$video = $false
 )
 
@@ -119,6 +119,9 @@ $output_path = Join-Path $tool_path $source
 if ($is_youtube_playlist) {
     $playlist_name = "$date`_$source`_$folder".TrimEnd('_') + ".ini"
     $playlist_path = Join-Path $tool_path $source "Links" $playlist_name
+     if (Test-Path $playlist_path) {
+        Remove-Item $playlist_path -verbose
+    }
     $clean_url = Get-CleanURL -url $url
 } else {
     $clean_url = Get-CleanURL -url $url -youtube_param "v"
